@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Buns - Asian Inspired Bakery</title>
+    <style>
+        :root {
+            --primary: #ff6b6b;
+            --secondary: #ff8e8e;
+            --accent: #ffd166;
+            --light: #fff9f0;
+            --dark: #392f2f;
+            --success: #06d6a0;
+            --warning: #ffd166;
+            --danger: #ef476f;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+        }
+        
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo h1 {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .nav-toggle {
+            font-size: 1.5rem;
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+        }
+        
+        nav {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background-color: var(--primary);
+            padding: 1rem;
+        }
+        
+        nav.active {
+            display: block;
+        }
+        
+        nav ul {
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-bottom: 0.5rem;
+        }
+        
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.1rem;
+        }
+        
+        main {
+            padding: 1rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .hero {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/api/placeholder/800/400');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            text-align: center;
+            padding: 4rem 1rem;
+            margin-bottom: 2rem;
+            border-radius: 0.5rem;
+        }
+        
+        .hero h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .hero p {
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            background-color: var(--accent);
+            color: var(--dark);
+            border: none;
+            border-radius: 0.25rem;
+            font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .btn:hover {
+            background-color: #ffe08a;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--secondary);
+        }
+        
+        .status-section {
+            background-color: white;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .status-section h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+        
+        .status-cards {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .status-card {
+            flex: 1;
+            min-width: 200px;
+            padding: 1rem;
+            background-color: var(--light);
+            border-radius: 0.5rem;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .status-card strong {
+            display: block;
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .status-card span {
+            color: #666;
+        }
+        
+        .menu-section {
+            margin-bottom: 2rem;
+        }
+        
+        .menu-section h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+        
+        .menu-filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .filter-btn {
+            background-color: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            padding: 0.5rem 1rem;
+            border-radius: 0.25rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .filter-btn.active {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .menu-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .menu-item {
+            background-color: white;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s;
+        }
+        
+        .menu-item:hover {
+            transform: translateY(-5px);
+        }
+        
+        .menu-item-image {
+            height: 150px;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .menu-item-content {
+            padding: 1rem;
+        }
+        
+        .menu-item-content h4 {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .menu-item-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .menu-item-description {
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            color: #444;
+        }
+        
+        .menu-item-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .item-price {
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+        }
+        
+        .quantity-btn {
+            width: 25px;
+            height: 25px;
+            background-color: var(--light);
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        
+        .quantity-input {
+            width: 30px;
+            height: 25px;
+            text-align: center;
+            border: 1px solid #ddd;
+            margin: 0 5px;
+        }
+        
+        .add-to-cart {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 0.25rem;
+            cursor: pointer;
+            margin-top: 0.5rem;
+            width: 100%;
+            font-weight: bold;
+        }
+        
+        .cart-section {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: white;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 90;
+        }
+        
+        .cart-info {
+            display: flex;
+            align-items: center;
+        }
+        
+        .cart-icon {
+            position: relative;
+            margin-right: 0.5rem;
+        }
+        
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: var(--primary);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+        }
+        
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            z-index: 100;
+        }
+        
+        .overlay.active {
+            display: block;
+        }
+        
+        .modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            border-radius: 0.5rem;
+            width: 90%;
+            max-width: 500px;
+            max-height: 80vh;
+            overflow-y: auto;
+            padding: 1.5rem;
+            z-index: 110;
+            display: none;
+        }
+        
+        .modal.active {
+            display: block;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 1rem 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .order-item-details h4 {
+            margin-bottom: 0.25rem;
+        }
+        
+        .order-item-price {
+            color: var(--dark);
+        }
+        
+        .order-total {
+            display: flex;
+            justify-content: space-between;
+            padding: 1rem 0;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        
+        .order-pickup {
+            background-color: var(--light);
+            padding: 1rem;
+            border-radius: 0.25rem;
+            margin: 1rem 0;
+        }
+        
+        .order-pickup h4 {
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+        
+        .order-pickup p {
+            margin-bottom: 0.5rem;
+        }
+        
+        .qr-code {
+            background-image: url('/api/placeholder/200/200');
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            width: 150px;
+            height: 150px;
+            margin: 1rem auto;
+        }
+        
+        .order-number {
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 1rem 0;
+        }
+        
+        .pickup-time {
+            text-align: center;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+        
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 2rem 1rem;
+            text-align: center;
+            margin-top: 4rem;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .footer-links a {
+            color: var(--light);
+            text-decoration: none;
+        }
+        
+        @media (min-width: 768px) {
+            .nav-toggle {
+                display: none;
+            }
+            
+            nav {
+                display: block;
+                position: static;
+                padding: 0;
+                background-color: transparent;
+            }
+            
+            nav ul {
+                display: flex;
+                gap: 1.5rem;
+            }
+            
+            nav ul li {
+                margin-bottom: 0;
+            }
+            
+            .hero {
+                padding: 6rem 2rem;
+            }
+            
+            .hero h2 {
+                font-size: 2.5rem;
+            }
+            
+            .status-cards {
+                flex-wrap: nowrap;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="logo">
+                <h1>Happy Buns</h1>
+            </div>
+            <button class="nav-toggle" id="navToggle">☰</button>
+            <nav id="mainNav">
+                <ul>
+                    <li><a href="#menu">Menu</a></li>
+                    <li><a href="#status">Order Status</a></li>
+                    <li><a href="#about">About Us</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <main>
+        <section class="hero">
+            <h2>Fresh Asian-Inspired Buns</h2>
+            <p>Handcrafted bao buns with delicious fillings made fresh daily</p>
+            <a href="#menu" class="btn">Order Now</a>
+        </section>
+        
+        <section class="status-section" id="status">
+            <h3>Live Status</h3>
+            <div class="status-cards">
+                <div class="status-card">
+                    <strong id="waitTime">15 min</strong>
+                    <span>Current Wait Time</span>
+                </div>
+                <div class="status-card">
+                    <strong id="inlineQueue">8</strong>
+                    <span>People in Queue</span>
+                </div>
+                <div class="status-card">
+                    <strong id="ordersInProgress">12</strong>
+                    <span>Orders in Progress</span>
+                </div>
+            </div>
+        </section>
+        
+        <section class="menu-section" id="menu">
+            <h3>Our Menu</h3>
+            <div class="menu-filters">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="savory">Savory</button>
+                <button class="filter-btn" data-filter="sweet">Sweet</button>
+                <button class="filter-btn" data-filter="vegan">Vegan</button>
+            </div>
+            
+            <div class="menu-items">
+                <!-- Savory Items -->
+                <div class="menu-item" data-category="savory">
+                    <div class="menu-item-image" style="background-image: url('/api/placeholder/250/150')"></div>
+                    <div class="menu-item-content">
+                        <h4>BBQ Pork Bun</h4>
+                        <div class="menu-item-meta">
+                            <span>10 mins prep</span>
+                            <span>15 left</span>
+                        </div>
+                        <p class="menu-item-description">Fluffy steamed bun filled with savory BBQ pork in our signature sauce.</p>
+                        <div class="menu-item-footer">
+                            <span class="item-price">$4.50</span>
+                            <div class="quantity-selector">
+                                <button class="quantity-btn minus">-</button>
+                                <input type="number" class="quantity-input" value="0" min="0" max="10">
+                                <button class="quantity-btn plus">+</button>
+                            </div>
+                        </div>
+                        <button class="add-to-cart">Add to Order</button>
+                    </div>
+                </div>
+                
+                <div class="menu-item" data-category="savory">
+                    <div class="menu-item-image" style="background-image: url('/api/placeholder/250/150')"></div>
+                    <div class="menu-item-content">
+                        <h4>Mushroom & Tofu Bun</h4>
+                        <div class="menu-item-meta">
+                            <span>8 mins prep</span>
+                            <span>20 left</span>
+                        </div>
+                        <p class="menu-item-description">Savory mushrooms and tofu with ginger and scallions in a soft steamed bun.</p>
+                        <div class="menu-item-footer">
+                            <span class="item-price">$4.25</span>
+                            <div class="quantity-selector">
+                                <button class="quantity-btn minus">-</button>
+                                <input type="number" class="quantity-input" value="0" min="0" max="10">
+                                <button class="quantity-btn plus">+</button>
+                            </div>
+                        </div>
+                        <button class="add-to-cart">Add to Order</button>
+                    </div>
+                </div>
+                
+                <div class="menu-item" data-category="savory">
+                    <div class="menu-item-image" style="background-image: url('/api/placeholder/250/150')"></div>
+                    <div class="menu-item-content">
+                        <h4>Chicken Teriyaki Bun</h4>
+                        <div class="menu-item-meta">
+                            <span>12 mins prep</span>
+                            <span>8 left</span>
+                        </div>
+                        <p class="menu-item-description">Tender chicken pieces glazed with teriyaki sauce and vegetables.</p>
+                        <div class="menu-item-footer">
+                            <span class="item-price">$4.75</span>
+                            <div class="quantity-selector">
+                                <button class="quantity-btn minus">-</button>
+                                <input type="number" class="quantity-input" value="0" min="0" max="10">
+                                <button class="quantity-btn plus">+</button>
+                            </div>
+                        </div>
+                        <button class="add-to-cart">Add to Order</button>
+                    </div>
+                </div>
+                
+                <!-- Sweet Items -->
+                <div class="menu-item" data-category="sweet">
+                    <div class="menu-item-image" style="background-image: url('/api/placeholder/250/150')"></div>
+                    <div class="menu-item-content">
+                        <h4>Red Bean Bun</h4>
+                        <div class="menu-item-meta">
+                            <span>5 mins prep</span>
+                            <span>25 left</span>
+                        </div>
+                        <p class="menu-item-description">Sweet red bean paste wrapped in a fluffy steamed bun.</p>
+                        <div class="menu-item-footer">
+                            <span class="item-price">$3.95</span>
+                            <div class="quantity-selector">
+                                <button class="quantity-btn minus">-</button>
+                                <input type="number" class="quantity-input" value="0" min="0" max="10">
+                                <button class="quantity-btn plus">+</button>
+                            </div>
+                        </div>
+                        <button class="add-to-cart">Add to Order</button>
+                    </div>
+                </div>
+                
+                <div class="menu-item" data-category="sweet">
+                    <div class="menu-item-image" style="background-image: url('/api/placeholder/250/150')"></div>
+                    <div class="menu-item-content">
+                        <h4>Matcha Custard Bun</h4>
+                        <div class="menu-item-meta">
+                            <span>7 mins prep</span>
+                            <span>12 left</span>
+                        </div>
+                        <p class="menu-item-description">Smooth matcha-infused custard in a signature steamed bun.</p>
+                        <div class="menu-item-footer">
+                            <span class="item-price">$4.25</span>
+                            <div class="quantity-selector">
+                                <button class="quantity-btn minus">-</button>
+                                <input type="number" class="quantity-input" value="0" min="0" max="10">
+                                <button class="quantity-btn plus">+</button>
+                            </div>
+                        </div>
+                        <button class="add-to-cart">Add to Order</button>
+                    </div>
+                </div>
+                
+                <!-- Vegan Items -->
+                <div class="menu-item" data-category="vegan">
+                    <div class="menu-item-image" style="background-image: url('/api/placeholder/250/150')"></div>
+                    <div class="menu-item-content">
+                        <h4>Spicy Vegetable Bun</h4>
+                        <div class="menu-item-meta">
+                            <span>9 mins prep</span>
+                            <span>18 left</span>
+                        </div>
+                        <p class="menu-item-description">Mixed vegetables with a spicy sauce in our vegan bun dough.</p>
+                        <div class="menu-item-footer">
+                            <span class="item-price">$4.25</span>
+                            <div class="quantity-selector">
+                                <button class="quantity-btn minus">-</button>
+                                <input type="number" class="quantity-input" value="0" min="0" max="10">
+                                <button class="quantity-btn plus">+</button>
+                            </div>
+                        </div>
+                        <button class="add-to-cart">Add to Order</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <div class="cart-section">
+        <div class="cart-info">
+            <div class="cart-icon">
+                🛒
+                <span class="cart-count">0</span>
+            </div>
+            <span id="cartTotal">$0.00</span>
+        </div>
+        <button class="btn btn-primary" id="checkoutBtn">Checkout</button>
+    </div>
+    
+    <div class="overlay" id="overlay"></div>
+    
+    <div class="modal" id="cartModal">
+        <div class="modal-header">
+            <h3>Your Order</h3>
+            <button class="modal-close">&times;</button>
+        </div>
+        <div id="orderItems">
+            <!-- Order items will be added here -->
+        </div>
+        <div class="order-total">
+            <span>Total:</span>
+            <span id="orderTotal">$0.00</span>
+        </div>
+        <button class="btn btn-primary" id="placeOrderBtn">Place Order</button>
+    </div>
+    
+    <div class="modal" id="orderConfirmationModal">
+        <div class="modal-header">
+            <h3>Order Confirmed!</h3>
+            <button class="modal-close">&times;</button>
+        </div>
+        <div class="order-number">#1234</div>
+        <div class="pickup-time">Ready for pickup at 12:15 PM</div>
+        <div class="order-pickup">
+            <h4>Pickup Instructions</h4>
+            <p>Show the QR code below when you arrive to quickly collect your order.</p>
+            <div class="qr-code"></div>
+            <p>Scan this code to check your order status anytime.</p>
+        </div>
+        <button class="btn btn-primary" id="doneBtn">Done</button>
+    </div>
+    
+    <footer>
+        <h3>Happy Buns</h3>
+        <p>123 Bakery Street, City, State 12345</p>
+        <div class="footer-links">
+            <a href="#">Hours & Location</a>
+            <a href="#">About Us</a>
+            <a href="#">Contact</a>
+        </div>
+        <p>&copy; 2025 Happy Buns. All rights reserved.</p>
+    </footer>
+    
+    <script>
+        // Menu filtering
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const menuItems = document.querySelectorAll('.menu-item');
+        
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Remove active class from all buttons
+                filterBtns.forEach(btn => btn.classList.remove('active'));
+                btn.classList.add('active');
+                
+                const filter = btn.dataset.filter;
+                
+                // Show/hide menu items based on filter
+                menuItems.forEach(item => {
+                    if (filter === 'all' || item.dataset.category === filter) {
+                        item.style.display = 'block';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            });
+        });
+        
+        // Navigation toggle for mobile
+        const navToggle = document.getElementById('navToggle');
+        const mainNav = document.getElementById('mainNav');
+        
+        navToggle.addEventListener('click', () => {
+            mainNav.classList.toggle('active');
+        });
+        
+        // Quantity selectors
+        const plusBtns = document.querySelectorAll('.plus');
+        const minusBtns = document.querySelectorAll('.minus');
+        
+        plusBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const input = btn.previousElementSibling;
+                const value = parseInt(input.value);
+                input.value = value + 1;
+            });
+        });
+        
+        minusBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const input = btn.nextElementSibling;
+                const value = parseInt(input.value);
+                if (value > 0) {
+                    input.value = value - 1;
+                }
+            });
+        });
+        
+        // Cart functionality
+        const addToCartBtns = document.querySelectorAll('.add-to-cart');
+        const cartCount = document.querySelector('.cart-count');
+        const cartTotal = document.getElementById('cartTotal');
+        const orderTotal = document.getElementById('orderTotal');
+        const orderItems = document.getElementById('orderItems');
+        let cart = [];
+        
+        addToCartBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const itemContainer = btn.closest('.menu-item-content');
+                const itemName = itemContainer.querySelector('h4').textContent;
+                const itemPrice = parseFloat(itemContainer.querySelector('.item-price').textContent.replace('$', ''));
+                const itemQuantity = parseInt(itemContainer.querySelector('.quantity-input').value);
+                
+                if (itemQuantity > 0) {
+                    // Check if item already in cart
+                    const existingItem = cart.find(item => item.name === itemName);
+                    
+                    if (existingItem) {
+                        existingItem.quantity += itemQuantity;
+                    } else {
+                        cart.push({
+                            name: itemName,
+                            price: itemPrice,
+                            quantity: itemQuantity
+                        });
+                    }
+                    
+                    updateCart();
+                    itemContainer.querySelector('.quantity-input').value = 0;
+                }
+            });
+        });
+        
+        function updateCart() {
+            // Update cart count
+            const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
+            cartCount.textContent = totalItems;
+            
+            // Update cart total
+            const total = cart.reduce((total, item) => total + (item.price * item.quantity), 0);
+            cartTotal.textContent = `$${total.toFixed(2)}`;
+            orderTotal.textContent = `$${total.toFixed(2)}`;
+            
+            // Update order items
+            orderItems.innerHTML = '';
+            cart.forEach(item => {
+                const itemElement = document.createElement('div');
+                itemElement.className = 'order-item';
+                itemElement.innerHTML = `
+                    <div class="order-item-details">
+                        <h4>${item.name} × ${item.quantity}</h4>
+                    </div>
+                    <div class="order-item-price">$${(item.price * item.quantity).toFixed(2)}</div>
+                `;
+                orderItems.appendChild(itemElement);
+            });
+        }
+        
+        // Modal handling
+        const overlay = document.getElementById('overlay');
+        const cartModal = document.getElementById('cartModal');
+        const orderConfirmationModal = document.getElementById('orderConfirmationModal');
+        const checkoutBtn = document.getElementById('checkoutBtn');
+        const placeOrderBtn = document.getElementById('placeOrderBtn');
+        const doneBtn = document.getElementById('doneBtn');
+        const modalCloseBtns = document.querySelectorAll('.modal-close');
+        
+        checkoutBtn.addEventListener('click', () => {
+            if (cart.length > 0) {
+                openModal(cartModal);
+            }
+        });
+        
+        placeOrderBtn.addEventListener('click', () => {
+            closeModal(cartModal);
+            openModal(orderConfirmationModal);
+            // Reset cart
+            cart = [];
+            updateCart();
+            
+            // Update wait time dynamically
+            simulateOrderProcessing();
+        });
+        
+        doneBtn.addEventListener('click', () => {
+            closeModal(orderConfirmationModal);
+        });
+        
+        modalCloseBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const modal = btn.closest('.modal');
+                closeModal(modal);
+            });
+        });
+        
+        function openModal(modal) {
+            overlay.classList.add('active');
+            modal.classList.add('active');
+        }
+        
+        function closeModal(modal) {
+            overlay.classList.remove('active');
+            modal.classList.remove('active');
+        }
+        
