@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Buns | Asian-Inspired Bakery</title>
+  <style>
+    /* Global Styles */
+    :root {
+      --primary: #ff6b6b;
+      --secondary: #ffa5a5;
+      --dark: #333;
+      --light: #f9f9f9;
+      --success: #4bb543;
+      --warning: #ff9800;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    body {
+      background-color: var(--light);
+      color: var(--dark);
+      font-size: 16px;
+    }
+    
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 15px;
+    }
+    
+    /* Header */
+    header {
+      background-color: white;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+    }
+    
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .logo img {
+      height: 40px;
+    }
+    
+    .logo h1 {
+      color: var(--primary);
+      font-size: 1.5rem;
+    }
+    
+    .nav-links {
+      display: none; /* Hidden by default on mobile */
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    
+    .nav-links.active {
+      display: flex;
+      flex-direction: column;
+      position: absolute;
+      top: 60px;
+      left: 0;
+      right: 0;
+      background: white;
+      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+      padding: 10px 0;
+      z-index: 10;
+    }
+    
+    .nav-links li {
+      padding: 10px 20px;
+    }
+    
+    .nav-links a {
+      text-decoration: none;
+      color: var(--dark);
+      font-weight: 500;
+      transition: color 0.3s;
+      display: block;
+      padding: 5px 0;
+    }
+    
+    .nav-links a:hover {
+      color: var(--primary);
+    }
+    
+    .mobile-menu-btn {
+      background: transparent;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      display: block;
+    }
+    
+    .cart-btn {
+      position: relative;
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 50px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.9rem;
+    }
+    
+    .cart-count {
+      background-color: white;
+      color: var(--primary);
+      font-size: 0.7rem;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    /* Hero Section */
+    .hero {
+      background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/api/placeholder/1000/600') center/cover no-repeat;
+      height: 300px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: white;
+    }
+    
+    .hero-content h2 {
+      font-size: 2rem;
+      margin-bottom: 15px;
+    }
+    
+    .hero-content p {
+      font-size: 1rem;
+      margin-bottom: 20px;
+    }
+    
+    .cta-btn {
+      background-color: var(--primary);
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 50px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    
+    .cta-btn:hover {
+      background-color: var(--secondary);
+    }
+    
+    /* Menu Section */
+    .menu-section {
+      padding: 40px 0;
+    }
+    
+    .section-title {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    
+    .section-title h2 {
+      font-size: 2rem;
+      color: var(--primary);
+      margin-bottom: 10px;
+    }
+    
+    .section-title p {
+      color: #666;
+      font-size: 0.9rem;
+    }
+    
+    .menu-categories {
+      display: flex;
+      justify-content: flex-start;
+      gap: 10px;
+      margin-bottom: 25px;
+      overflow-x: auto;
+      padding-bottom: 10px;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none; /* Firefox */
+    }
+    
+    .menu-categories::-webkit-scrollbar {
+      display: none; /* Chrome, Safari, Opera */
+    }
+    
+    .category-btn {
+      background-color: transparent;
+      border: 2px solid var(--primary);
+      color: var(--primary);
+      padding: 6px 15px;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: all 0.3s;
+      white-space: nowrap;
+      flex-shrink: 0;
+      font-size: 0.9rem;
+    }
+    
+    .category-btn.active, .category-btn:hover {
+      background-color: var(--primary);
+      color: white;
+    }
+    
+    .menu-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+    
+    .menu-item {
+      background-color: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s;
+    }
+    
+    .menu-item:hover {
+      transform: translateY(-5px);
+    }
+    
+    .menu-item-img {
+      height: 160px;
+      background-size: cover;
+      background-position: center;
+    }
+    
+    .menu-item-info {
+      padding: 15px;
+    }
+    
+    .menu-item-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    
+    .menu-item-title h3 {
+      font-size: 1.1rem;
+    }
+    
+    .menu-item-price {
+      font-weight: 700;
+      color: var(--primary);
+    }
+    
+    .menu-item-details {
+      margin-bottom: 12px;
+      color: #666;
+      font-size: 0.9rem;
+    }
+    
+    .menu-item-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      color: #888;
+      font-size: 0.8rem;
+      margin-bottom: 12px;
+    }
+    
+    .stock-status {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    
+    .low-stock {
+      color: var(--warning);
+    }
+    
+    .add-to-cart {
+      width: 100%;
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      padding: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      transition: background-color 0.3s;
+      font-size: 0.9rem;
+    }
+    
+    .add-to-cart:hover {
+      background-color: var(--secondary);
+    }
+    
+    /* QR Code Section */
+    .qr-section {
+      background-color: white;
+      padding: 40px 0;
+      text-align: center;
+    }
+    
+    .qr-container {
+      max-width: 100%;
+      margin: 0 auto;
+      padding: 20px 15px;
+      border-radius: 12px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    .qr-code {
+      margin: 15px 0;
+    }
+    
+    .qr-code img {
+      max-width: 180px;
+    }
+    
+    /* Cart Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 999;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+    
+    .modal-content {
+      background-color: white;
+      margin: 5% auto;
+      padding: 15px;
+      border-radius: 12px;
+      width: 95%;
+      max-width: 500px;
+      max-height: 90vh;
+      overflow-y: auto;
+      animation: slideIn 0.3s;
+    }
+    
+    @keyframes slideIn {
+      from {transform: translateY(-30px); opacity: 0;}
+      to {transform: translateY(0); opacity: 1;}
+    }
+    
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #eee;
+    }
+    
+    .close-btn {
+      background: transparent;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+    
+    .cart-items {
+      max-height: 250px;
+      overflow-y: auto;
+      margin-bottom: 15px;
+    }
+    
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid #eee;
+      font-size: 0.9rem;
+    }
+    
+    .cart-item-img {
+      width: 50px;
+      height: 50px;
+      border-radius: 6px;
+      background-size: cover;
+      background-position: center;
+      flex-shrink: 0;
+    }
+    
+    .cart-item-details {
+      flex-grow: 1;
+      padding: 0 10px;
+    }
+    
+    .cart-item-details h3 {
+      font-size: 1rem;
+      margin-bottom: 3px;
+    }
+    
+    .quantity-control {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .quantity-btn {
+      background-color: #eee;
+      border: none;
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+    
+    .cart-totals {
+      padding: 15px 0;
+      border-top: 1px solid #eee;
+    }
+    
+    .cart-total-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      font-size: 0.9rem;
+    }
+    
+    .grand-total {
+      font-weight: 700;
+      color: var(--primary);
+      font-size: 1.1rem;
+    }
+    
+    .checkout-btn {
+      width: 100%;
+      padding: 12px;
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 5px;
+      margin-top: 15px;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 600;
+    }
+    
+    /* Order Status Modal */
+    .status-modal {
+      display: none;
+      z-index: 1000;
+    }
+    
+    .status-steps {
+      margin: 20px 0;
+    }
+    
+    .step {
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 15px;
+    }
+    
+    .step-number {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background-color: #eee;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 10px;
+      flex-shrink: 0;
+      font-size: 0.9rem;
+    }
+    
+    .step.completed .step-number {
+      background-color: var(--success);
+      color: white;
+    }
+    
+    .step.active .step-number {
+      background-color: var(--primary);
+      color: white;
+    }
+    
+    .step-info h3 {
+      font-size: 1rem;
+      margin-bottom: 3px;
+    }
+    
+    .step-info p {
+      font-size: 0.85rem;
+      color: #666;
+    }
+    
+    .pickup-info {
+      background-color: #f4f4f4;
+      padding: 15px;
+      border-radius: 8px;
+      margin-top: 15px;
+      font-size: 0.9rem;
+    }
+    
+    .pickup-info h3 {
+      font-size: 1rem;
+      margin-bottom: 5px;
+    }
+    
+    .pickup-code {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--primary);
+      text-align: center;
+      margin: 12px 0;
+      letter-spacing: 2px;
+    }
+    
+    /* Footer */
+    footer {
+      background-color: var(--dark);
+      color: white;
+      padding: 30px 0 20px;
+    }
+    
+    .footer-content {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 25px;
+    }
+    
+    .footer-column h3 {
+      margin-bottom: 15px;
+      font-size: 1.2rem;
+    }
+    
+    .footer-links {
+      list-style: none;
+    }
+    
+    .footer-links li {
+      margin-bottom: 8px;
+      font-size: 0.9rem;
+    }
+    
+    .footer-links a {
+      color: #ccc;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    
+    .footer-links a:hover {
+      color: var(--primary);
+    }
+    
+    .footer-bottom {
+      text-align: center;
+      padding-top: 20px;
+      margin-top: 20px;
+      border-top: 1px solid #444;
+      font-size: 0.85rem;
+    }
+    
+    /* Mobile menu toggle */
+    .mobile-nav-container {
+      position: relative;
+    }
+    
+    /* Responsive Styles */
+    @media (min-width: 481px) {
+      .menu-item-meta {
+        flex-direction: row;
+        justify-content: space-between;
+      }
+    }
+    
+    @media (min-width: 768px) {
+      body {
+        font-size: 16px;
+      }
+      
+      .mobile-menu-btn {
+        display: none;
+      }
+      
+      .nav-links {
+        display: flex;
+        flex-direction: row;
+        position: static;
+        box-shadow: none;
+        padding: 0;
+        gap: 20px;
+      }
+      
+      .nav-links li {
+        padding: 0;
+      }
+      
+      .hero {
+        height: 400px;
+      }
+      
+      .hero-content h2 {
+        font-size: 2.5rem;
+      }
+      
+      .menu-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      .footer-content {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    
+    @media (min-width: 992px) {
+      .menu-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+      
+      .footer-content {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="container">
+      <div class="navbar">
+        <div class="logo">
+          <img src="/api/placeholder/100/100" alt="Happy Buns Logo">
+          <h1>Happy Buns</h1>
+        </div>
+        <button id="menuToggle" class="mobile-menu-btn">☰</button>
+        <ul id="navLinks" class="nav-links">
+          <li><a href="#menu">Menu</a></li>
+          <li><a href="#about">About Us</a></li>
+          <li><a href="#locations">Locations</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+        <button class="cart-btn" onclick="openCartModal()">
+          <span>Cart</span>
+          <span class="cart-count">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <h2>Delicious Asian-Inspired Buns</h2>
+        <p>Freshly made daily with premium ingredients</p>
+        <button class="cta-btn" onclick="scrollToMenu()">Order Now</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Menu Section -->
+  <section id="menu" class="menu-section">
+    <div class="container">
+      <div class="section-title">
+        <h2>Our Menu</h2>
+        <p>Fresh buns made daily - limited quantities available!</p>
+      </div>
+      
+      <div class="menu-categories">
+        <button class="category-btn active" onclick="filterCategory('all')">All</button>
+        <button class="category-btn" onclick="filterCategory('savory')">Savory</button>
+        <button class="category-btn" onclick="filterCategory('sweet')">Sweet</button>
+        <button class="category-btn" onclick="filterCategory('drinks')">Drinks</button>
+      </div>
+      
+      <div class="menu-grid">
+        <!-- Menu items will be populated here -->
+      </div>
+    </div>
+  </section>
+  
+  <!-- QR Code Section -->
+  <section class="qr-section">
+    <div class="container">
+      <div class="section-title">
+        <h2>Quick Menu Access</h2>
+        <p>Scan this QR code to view our menu with real-time availability</p>
+      </div>
+      <div class="qr-container">
+        <div class="qr-code">
+          <img src="/api/placeholder/200/200" alt="QR Code for Menu">
+        </div>
+        <p>Scan with your phone camera to access our digital menu</p>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-column">
+          <h3>Happy Buns</h3>
+          <p>Bringing you delicious Asian-inspired buns that make you happy with every bite.</p>
+        </div>
+        <div class="footer-column">
+          <h3>Quick Links</h3>
+          <ul class="footer-links">
+            <li><a href="#menu">Menu</a></li>
+            <li><a href="#about">About Us</a></li>
+            <li><a href="#locations">Locations</a></li>
+            <li><a href="#contact">Contact Us</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h3>Hours</h3>
+          <ul class="footer-links">
+            <li>Monday - Friday: 7am - 7pm</li>
+            <li>Saturday: 8am - 8pm</li>
+            <li>Sunday: 8am - 6pm</li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h3>Contact</h3>
+          <ul class="footer-links">
+            <li>123 Bun Street</li>
+            <li>Bakery District</li>
+            <li>Phone: (555) 123-BUNS</li>
+            <li>Email: info@happybuns.com</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 Happy Buns. All Rights Reserved.</p>
+      </div>
+    </div>
+  </footer>
+  
+  <!-- Cart Modal -->
+  <div id="cartModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Your Order</h2>
+        <button class="close-btn" onclick="closeCartModal()">&times;</button>
+      </div>
+      <div class="cart-items">
+        <!-- Cart items will be populated here -->
+      </div>
+      <div class="cart-totals">
+        <div class="cart-total-row">
+          <span>Subtotal:</span>
+          <span id="subtotal">$0.00</span>
+        </div>
+        <div class="cart-total-row">
+          <span>Tax:</span>
+          <span id="tax">$0.00</span>
+        </div>
+        <div class="cart-total-row grand-total">
+          <span>Total:</span>
+          <span id="total">$0.00</span>
+        </div>
+      </div>
+      <button class="checkout-btn" onclick="checkout()">Proceed to Checkout</button>
+    </div>
+  </div>
+  
+  <!-- Order Status Modal -->
+  <div id="statusModal" class="modal status-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Order Status</h2>
+        <button class="close-btn" onclick="closeStatusModal()">&times;</button>
+      </div>
+      <div class="status-steps">
+        <div class="step completed">
+          <div class="step-number">1</div>
+          <div class="step-info">
+            <h3>Order Received</h3>
+            <p>We've received your order!</p>
+          </div>
+        </div>
+        <div class="step active">
+          <div class="step-number">2</div>
+          <div class="step-info">
+            <h3>Order Processing</h3>
+            <p>We're preparing your buns fresh now</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <div class="step-info">
+            <h3>Ready for Pickup</h3>
+            <p>Your order is ready! Come and get it</p>
+          </div>
+        </div>
+      </div>
+      <div class="pickup-info">
+        <h3>Estimated Pickup Time:</h3>
+        <p id="estimatedTime">Today at 12:45 PM (15 minutes)</p>
+        <h3>Your Pickup Code:</h3>
+        <div class="pickup-code">B-143</div>
+        <p>Show this code when you arrive to collect your order</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Sample menu data
+    const menuItems = [
+      {
+        id: 1,
+        name: 'Char Siu Bao',
+        description: 'BBQ pork filled steamed bun',
+        price: 3.99,
+        category: 'savory',
+        prepTime: 5,
+        stock: 15,
+        image: '/api/placeholder/350/250'
+      },
+      {
+        id: 2,
+        name: 'Red Bean Bun',
+        description: 'Sweet red bean paste filled bun',
+        price: 3.49,
+        category: 'sweet',
+        prepTime: 5,
+        stock: 8,
+        image: '/api/placeholder/350/250'
+      },
+      {
+        id: 3,
+        name: 'Curry Chicken Bun',
+        description: 'Savory curry chicken filled bun',
+        price: 4.29,
+        category: 'savory',
+        prepTime: 7,
+        stock: 12,
+        image: '/api/placeholder/350/250'
+      },
+      {
+        id: 4,
+        name: 'Taro Bun',
+        description: 'Sweet purple taro filled bun',
+        price: 3.79,
+        category: 'sweet',
+        prepTime: 5,
+        stock: 6,
+        image: '/api/placeholder/350/250'
+      },
+      {
+        id: 5,
+        name: 'Pork & Chive Bun',
+        description: 'Classic pork and chive filled bun',
+        price: 3.99,
+        category: 'savory',
+        prepTime: 6,
+        stock: 10,
+        image: '/api/placeholder/350/250'
+      },
+      {
+        id: 6,
+        name: 'Matcha Red Bean Bun',
+        description: 'Green tea bun with red bean filling',
+        price: 4.49,
+        category: 'sweet',
+        prepTime: 5,
+        stock: 9,
+        image: '/api/placeholder/350/250'
+      },
+      {
+        id: 7,
+        name: 'Milk Tea',
+        description: 'Classic milk tea with boba',
+        price: 4.99,
+        category: 'drinks',
+        prepTime: 3,
+        stock: 20,
+        image: '/api/placeholder/350/250'
+      },
+      {
+        id: 8,
+        name: 'Matcha Latte',
+        description: 'Creamy matcha green tea latte',
+        price: 5.49,
+        category: 'drinks',
+        prepTime: 3,
+        stock: 15,
+        image: '/api/placeholder/350/250'
+      }
+    ];
+    
+    // Cart data
+    let cart = [];
+    
+    // Mobile menu toggle
+    document.addEventListener('DOMContentLoaded', function() {
+      const menuToggle = document.getElementById('menuToggle');
+      const navLinks = document.getElementById('navLinks');
+      
+      menuToggle.addEventListener('click', function() {
+        navLinks.classList.toggle('active');
+      });
+      
+      // Close menu when clicking a link
+      const navLinkItems = document.querySelectorAll('.nav-links a');
+      navLinkItems.forEach(link => {
+        link.addEventListener('click', function() {
+          navLinks.classList.remove('active');
+        });
+      });
+      
+      // Close menu when clicking outside
+      document.addEventListener('click', function(event) {
+        const isClickInsideMenu = navLinks.contains(event.target);
+        const isClickOnToggle = menuToggle.contains(event.target);
+        
+        if (!isClickInsideMenu && !isClickOnToggle && navLinks.classList.contains('active')) {
+          navLinks.classList.remove('active');
+        }
+      });
+      
+      // Initialize the menu display
+      displayMenuItems();
+    });
+    
+    // Scroll to menu section
+    function scrollToMenu() {
+      const menuSection = document.getElementById('menu');
+      menuSection.scrollIntoView({ behavior: 'smooth' });
+    }
+    
+    // Display menu items
+    function displayMenuItems(category = 'all') {
+      const menuGrid = document.querySelector('.menu-grid');
+      menuGrid.innerHTML = '';
+      
+      const filteredItems = category === 'all' 
+        ? menuItems 
+        : menuItems.filter(item => item.category === category);
+      
+      filteredItems.forEach(item => {
+        const stockStatus = item.stock < 5 
+          ? `<span class="stock-status low-stock"><i>⚠️</i> Only ${item.stock} left!</span>` 
+          : `<span class="stock-status"><i>✓</i> In Stock (${item.stock})</span>`;
+          
+        const menuItemEl = document.createElement('div');
+        menuItemEl.className = 'menu-item';
+        menuItemEl.innerHTML = `
+          <div class="menu-item-img" style="background-image: url('${item.image}')"></div>
+          <div class="menu-item-info">
+            <div class="menu-item-title">
+              <h3>${item.name}</h3>
+              <span class="menu-item-price">$${item.price.toFixed(2)}</span>
+            </div>
+            <p class="menu-item-details">${item.description}</p>
+            <div class="menu-item-meta">
+              ${stockStatus}
+              <span>Ready in ${item.prepTime} mins</span>
+            </div>
+            <button class="add-to-cart" onclick="addToCart(${item.id})">
+              <span>Add to Cart</span>
+            </button>
+          </div>
+        `;
+        
+        menuGrid.appendChild(menuItemEl);
+      });
+    }
+    
+    // Filter menu by category
+    function filterCategory(category) {
+      const buttons = document.querySelectorAll('.category-btn');
+      buttons.forEach(btn => btn.classList.remove('active'));
+      
+      const activeButton = document.querySelector(`.category-btn[onclick="filterCategory('${category}')"]`);
+      activeButton.classList.add('active');
+      
+      displayMenuItems(category);
+    }
+    
+    // Add item to cart
+    function addToCart
