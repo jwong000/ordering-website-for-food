@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Buns | Asian-Inspired Bakery</title>
+  <style>
+    /* Global Styles */
+    :root {
+      --primary: #ff6b6b;
+      --secondary: #ffa5a5;
+      --dark: #333;
+      --light: #f9f9f9;
+      --success: #4bb543;
+      --warning: #ff9800;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    body {
+      background-color: var(--light);
+      color: var(--dark);
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 15px;
+    }
+    
+    /* Header */
+    header {
+      background-color: white;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 0;
+    }
+    
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .logo img {
+      height: 50px;
+    }
+    
+    .logo h1 {
+      color: var(--primary);
+      font-size: 1.8rem;
+    }
+    
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: 20px;
+    }
+    
+    .nav-links a {
+      text-decoration: none;
+      color: var(--dark);
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+    
+    .nav-links a:hover {
+      color: var(--primary);
+    }
+    
+    .cart-btn {
+      position: relative;
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 50px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    
+    .cart-count {
+      background-color: white;
+      color: var(--primary);
+      font-size: 0.7rem;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    /* Hero Section */
+    .hero {
+      background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/api/placeholder/1000/600') center/cover no-repeat;
+      height: 400px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: white;
+    }
+    
+    .hero-content h2 {
+      font-size: 3rem;
+      margin-bottom: 20px;
+    }
+    
+    .hero-content p {
+      font-size: 1.2rem;
+      margin-bottom: 30px;
+    }
+    
+    .cta-btn {
+      background-color: var(--primary);
+      color: white;
+      padding: 12px 25px;
+      border: none;
+      border-radius: 50px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    
+    .cta-btn:hover {
+      background-color: var(--secondary);
+    }
+    
+    /* Menu Section */
+    .menu-section {
+      padding: 60px 0;
+    }
+    
+    .section-title {
+      text-align: center;
+      margin-bottom: 50px;
+    }
+    
+    .section-title h2 {
+      font-size: 2.5rem;
+      color: var(--primary);
+      margin-bottom: 15px;
+    }
+    
+    .section-title p {
+      color: #666;
+    }
+    
+    .menu-categories {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+    
+    .category-btn {
+      background-color: transparent;
+      border: 2px solid var(--primary);
+      color: var(--primary);
+      padding: 8px 20px;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .category-btn.active, .category-btn:hover {
+      background-color: var(--primary);
+      color: white;
+    }
+    
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 30px;
+    }
+    
+    .menu-item {
+      background-color: white;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s;
+    }
+    
+    .menu-item:hover {
+      transform: translateY(-10px);
+    }
+    
+    .menu-item-img {
+      height: 200px;
+      background-size: cover;
+      background-position: center;
+    }
+    
+    .menu-item-info {
+      padding: 20px;
+    }
+    
+    .menu-item-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    
+    .menu-item-title h3 {
+      font-size: 1.3rem;
+    }
+    
+    .menu-item-price {
+      font-weight: 700;
+      color: var(--primary);
+    }
+    
+    .menu-item-details {
+      margin-bottom: 15px;
+      color: #666;
+    }
+    
+    .menu-item-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: #888;
+      font-size: 0.9rem;
+      margin-bottom: 15px;
+    }
+    
+    .stock-status {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    
+    .low-stock {
+      color: var(--warning);
+    }
+    
+    .add-to-cart {
+      width: 100%;
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      padding: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      transition: background-color 0.3s;
+    }
+    
+    .add-to-cart:hover {
+      background-color: var(--secondary);
+    }
+    
+    /* QR Code Section */
+    .qr-section {
+      background-color: white;
+      padding: 60px 0;
+      text-align: center;
+    }
+    
+    .qr-container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    .qr-code {
+      margin: 20px 0;
+    }
+    
+    .qr-code img {
+      max-width: 200px;
+    }
+    
+    /* Cart Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 999;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+    
+    .modal-content {
+      background-color: white;
+      margin: 10% auto;
+      padding: 20px;
+      border-radius: 15px;
+      max-width: 600px;
+      animation: slideIn 0.3s;
+    }
+    
+    @keyframes slideIn {
+      from {transform: translateY(-50px); opacity: 0;}
+      to {transform: translateY(0); opacity: 1;}
+    }
+    
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #eee;
+    }
+    
+    .close-btn {
+      background: transparent;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+    
+    .cart-items {
+      max-height: 300px;
+      overflow-y: auto;
+      margin-bottom: 20px;
+    }
+    
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid #eee;
+    }
+    
+    .cart-item-img {
+      width: 60px;
+      height: 60px;
+      border-radius: 8px;
+      background-size: cover;
+      background-position: center;
+    }
+    
+    .cart-item-details {
+      flex-grow: 1;
+      padding: 0 15px;
+    }
+    
+    .quantity-control {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .quantity-btn {
+      background-color: #eee;
+      border: none;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+    
+    .cart-totals {
+      padding: 15px 0;
+      border-top: 1px solid #eee;
+    }
+    
+    .cart-total-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+    
+    .grand-total {
+      font-weight: 700;
+      color: var(--primary);
+      font-size: 1.2rem;
+    }
+    
+    .checkout-btn {
+      width: 100%;
+      padding: 12px;
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 5px;
+      margin-top: 15px;
+      cursor: pointer;
+      font-size: 1.1rem;
+    }
+    
+    /* Order Status Modal */
+    .status-modal {
+      display: none;
+      z-index: 1000;
+    }
+    
+    .status-steps {
+      margin: 30px 0;
+    }
+    
+    .step {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    
+    .step-number {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: #eee;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 15px;
+    }
+    
+    .step.completed .step-number {
+      background-color: var(--success);
+      color: white;
+    }
+    
+    .step.active .step-number {
+      background-color: var(--primary);
+      color: white;
+    }
+    
+    .pickup-info {
+      background-color: #f4f4f4;
+      padding: 20px;
+      border-radius: 10px;
+      margin-top: 20px;
+    }
+    
+    .pickup-code {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--primary);
+      text-align: center;
+      margin: 15px 0;
+      letter-spacing: 3px;
+    }
+    
+    /* Footer */
+    footer {
+      background-color: var(--dark);
+      color: white;
+      padding: 40px 0;
+    }
+    
+    .footer-content {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 30px;
+    }
+    
+    .footer-column h3 {
+      margin-bottom: 20px;
+      font-size: 1.3rem;
+    }
+    
+    .footer-links {
+      list-style: none;
+    }
+    
+    .footer-links li {
+      margin-bottom: 10px;
+    }
+    
+    .footer-links a {
+      color: #ccc;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    
+    .footer-links a:hover {
+      color: var(--primary);
+    }
+    
+    .footer-bottom {
+      text-align: center;
+      padding-top: 30px;
+      margin-top: 30px;
+      border-top: 1px solid #444;
+    }
+    
+    /* Responsive Styles */
+    @media (max-width: 768px) {
+      .menu-categories {
+        overflow-x: auto;
+        padding-bottom: 10px;
+      }
+      
+      .nav-links {
+        display: none;
+      }
+      
+      .mobile-menu-btn {
+        display: block;
+      }
+      
+      .hero-content h2 {
+        font-size: 2.2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="container">
+      <div class="navbar">
+        <div class="logo">
+          <img src="/api/placeholder/100/100" alt="Happy Buns Logo">
+          <h1>Happy Buns</h1>
+        </div>
+        <ul class="nav-links">
+          <li><a href="#menu">Menu</a></li>
+          <li><a href="#about">About Us</a></li>
+          <li><a href="#locations">Locations</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+        <button class="cart-btn" onclick="openCartModal()">
+          <span>Cart</span>
+          <span class="cart-count">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <h2>Delicious Asian-Inspired Buns</h2>
+        <p>Freshly made daily with premium ingredients</p>
+        <button class="cta-btn" onclick="scrollToMenu()">Order Now</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Menu Section -->
+  <section id="menu" class="menu-section">
+    <div class="container">
+      <div class="section-title">
+        <h2>Our Menu</h2>
+        <p>Fresh buns made daily - limited quantities available!</p>
+      </div>
+      
+      <div class="menu-categories">
+        <button class="category-btn active" onclick="filterCategory('all')">All</button>
+        <button class="category-btn" onclick="filterCategory('savory')">Savory</button>
+        <button class="category-btn" onclick="filterCategory('sweet')">Sweet</button>
+        <button class="category-btn" onclick="filterCategory('drinks')">Drinks</button>
+      </div>
+      
+      <div class="menu-grid">
+        <!-- Menu items will be populated here -->
+      </div>
+    </div>
+  </section>
+  
+  <!-- QR Code Section -->
+  <section class="qr-section">
+    <div class="container">
+      <div class="section-title">
+        <h2>Quick Menu Access</h2>
+        <p>Scan this QR code to view our menu with real-time availability</p>
+      </div>
+      <div class="qr-container">
+        <div class="qr-code">
+          <img src="/api/placeholder/200/200" alt="QR Code for Menu">
+        </div>
+        <p>Scan with your phone camera to access our digital menu</p>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-column">
+          <h3>Happy Buns</h3>
+          <p>Bringing you delicious Asian-inspired buns that make you happy with every bite.</p>
+        </div>
+        <div class="footer-column">
+          <h3>Quick Links</h3>
+          <ul class="footer-links">
+            <li><a href="#menu">Menu</a></li>
+            <li><a href="#about">About Us</a></li>
+            <li><a href="#locations">Locations</a></li>
+            <li><a href="#contact">Contact Us</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h3>Hours</h3>
+          <ul class="footer-links">
+            <li>Monday - Friday: 7am - 7pm</li>
+            <li>Saturday: 8am - 8pm</li>
+            <li>Sunday: 8am - 6pm</li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h3>Contact</h3>
+          <ul class="footer-links">
+            <li>123 Bun Street</li>
+            <li>Bakery District</li>
+            <li>Phone: (555) 123-BUNS</li>
+            <li>Email: info@happybuns.com</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 Happy Buns. All Rights Reserved.</p>
+      </div>
+    </div>
+  </footer>
+  
+  <!-- Cart Modal -->
+  <div id="cartModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Your Order</h2>
+        <button class="close-btn" onclick="closeCartModal()">&times;</button>
+      </div>
+      <div class="cart-items">
+        <!-- Cart items will be populated here -->
+      </div>
+      <div class="cart-totals">
+        <div class="cart-total-row">
+          <span>Subtotal:</span>
+          <span id="subtotal">$0.00</span>
+        </div>
+        <div class="cart-total-row">
+          <span>Tax:</span>
+          <span id="tax">$0.00</span>
+        </div>
+        <div class="cart-total-row grand-total">
+          <span>Total:</span>
+          <span id="total">$0.00</span>
+        </div>
+      </div>
+      <button class="checkout-btn" onclick="checkout()">Proceed to Checkout</button>
+    </div>
+  </div>
+  
+  <!-- Order Status Modal -->
+  <div id="statusModal" class="modal status-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Order Status</h2>
+        <button class="close-btn" onclick="closeStatusModal()">&times;</button>
+      </div>
+      <div class="status-steps">
+        <div class="step completed">
+          <div class="step-number">1</div>
+          <div class="step-info">
+            <h3>Order Received</h3>
+            <p>We've received your order!</p>
+          </div>
+        </div>
+        <div class="step active">
+          <div class="step-number">2</div>
+          <div class="step-info">
+            <h3>Order Processing</h3>
+            <p>We're preparing your buns fresh now</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <div class="step-info">
+            <h3>Ready for Pickup</h3>
+            <p>Your order is ready! Come and get it</p>
+          </div>
+        </div>
+      </div>
+      <div class="pickup-info">
+        <h3>Estimated Pickup Time:</h3>
+        <p id="estimatedTime">Today at 12:45 PM (15 minutes)</p>
+        <h3>Your Pickup Code:</h3>
+        <div class="pickup-code">B-143</div>
+        <p>Show this code when you arrive to collect your order</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Sample menu data
+    const menuItems = [
+      {
+        id: 1,
+        name: 'Char Siu Bao',
+        description: 'BBQ pork filled steamed bun',
+        price: 3.99,
+        category: 'savory',
+        prepTime: 5,
+        stock: 15,
+        image: '/api/placeholder/350/250'
+      },
+      {
+        id: 2,
+        name: 'Red Bean Bun',
+        description: 'Sweet red bean paste filled bun',
+        price: 3.49,
+        category: 'sweet',
+        prepTime: 5,
+        stock: 8,
+        image: '/api/placeholder/350/250'
+      },
+      {
+        id: 3,
+        name: 'Curry Chicken Bun',
+        description: 'Savory curry chicken filled bun',
+        price: 4.29,
+        category: 'savory',
+        prepTime: 7,
+        stock: 12,
+        image: '/api/placeholder/350/250'
+      },
+      {
+        id: 4,
+        name: 'Taro Bun',
+        description: 'Sweet purple taro filled bun',
+        price: 3.79,
+        category: 'sweet',
+        prepTime: 5,
+        stock: 6,
+        image: '/api/placeholder/350/250'
+      },
+      {
+        id: 5,
+        name: 'Pork & Chive Bun',
+        description: 'Classic pork and chive filled bun',
+        price: 3.99,
+        category: 'savory',
+        prepTime: 6,
+        stock: 10,
+        image: '/api/placeholder/350/250'
+      },
+      {
+        id: 6,
+        name: 'Matcha Red Bean Bun',
+        description: 'Green tea bun with red bean filling',
+        price: 4.49,
+        category: 'sweet',
+        prepTime: 5,
+        stock: 9,
+        image: '/api/placeholder/350/250'
+      },
+      {
+        id: 7,
+        name: 'Milk Tea',
+        description: 'Classic milk tea with boba',
+        price: 4.99,
+        category: 'drinks',
+        prepTime: 3,
+        stock: 20,
+        image: '/api/placeholder/350/250'
+      },
+      {
+        id: 8,
+        name: 'Matcha Latte',
+        description: 'Creamy matcha green tea latte',
+        price: 5.49,
+        category: 'drinks',
+        prepTime: 3,
+        stock: 15,
+        image: '/api/placeholder/350/250'
+      }
+    ];
+    
+    // Cart data
+    let cart = [];
+    
+    // Display menu items
+    function displayMenuItems(category = 'all') {
+      const menuGrid = document.querySelector('.menu-grid');
+      menuGrid.innerHTML = '';
+      
+      const filteredItems = category === 'all' 
+        ? menuItems 
+        : menuItems.filter(item => item.category === category);
+      
+      filteredItems.forEach(item => {
+        const stockStatus = item.stock < 5 
+          ? `<span class="stock-status low-stock"><i>⚠️</i> Only ${item.stock} left!</span>` 
+          : `<span class="stock-status"><i>✓</i> In Stock (${item.stock})</span>`;
+          
+        const menuItemEl = document.createElement('div');
+        menuItemEl.className = 'menu-item';
+        menuItemEl.innerHTML = `
+          <div class="menu-item-img" style="background-image: url('${item.image}')"></div>
+          <div class="menu-item-info">
+            <div class="menu-item-title">
+              <h3>${item.name}</h3>
+              <span class="menu-item-price">$${item.price.toFixed(2)}</span>
+            </div>
+            <p class="menu-item-details">${item.description}</p>
+            <div class="menu-item-meta">
+              ${stockStatus}
+              <span>Ready in ${item.prepTime} mins</span>
+            </div>
+            <button class="add-to-cart" onclick="addToCart(${item.id})">
+              <span>Add to Cart</span>
+            </button>
+          </div>
+        `;
+        
+        menuGrid.appendChild(menuItemEl);
+      });
+    }
+    
+    // Filter menu by category
+    function filterCategory(category) {
+      const buttons = document.querySelectorAll('.category-btn');
+      buttons.forEach(btn => btn.classList.remove('active'));
+      
+      const activeButton = document.querySelector(`.category-btn[onclick="filterCategory('${category}')"]`);
+      activeButton.classList.add('active');
+      
+      displayMenuItems(category);
+    }
+    
+    // Add item to cart
+    function addToCart(itemId) {
+      const item = menuItems.find(item => item.id === itemId);
+      
+      if (item.stock <= 0) {
+        alert('Sorry, this item is out of stock!');
+        return;
+      }
+      
+      const existingItem = cart.find(cartItem => cartItem.id === itemId);
+      
+      if (existingItem) {
+        if (existingItem.quantity < item.stock) {
+          existingItem.quantity += 1;
+        } else {
+          alert('Sorry, we don\'t have enough stock!');
+          return;
+        }
+      } else {
+        cart.push({
+          id: item.id,
+          name: item.name,
+          price: item.price,
+          quantity: 1,
+          prepTime: item.prepTime,
+          image: item.image
+        });
+      }
+      
+      updateCartCount();
+      alert(`Added "${item.name}" to cart!`);
+    }
+    
+    // Update cart count in header
+    function updateCartCount() {
+      const cartCount = document.querySelector('.cart-count');
+      const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
+      cartCount.textContent = totalItems;
+    }
+    
+    // Display cart items
+    function displayCartItems() {
+      const cartItemsEl = document.querySelector('.cart-items');
+      cartItemsEl.innerHTML = '';
+      
+      if (cart.length === 0) {
+        cartItemsEl.innerHTML = '<p>Your cart is empty</p>';
+        return;
+      }
+      
+      cart.forEach(item => {
+        const cartItemEl = document.createElement('div');
+        cartItemEl.className = 'cart-item';
+        cartItemEl.innerHTML = `
+          <div class="cart-item-img" style="background-image: url('${item.image}')"></div>
+          <div class="cart-item-details">
+            <h3>${item.name}</h3>
+            <p>$${item.price.toFixed(2)} each</p>
+          </div>
+          <div class="quantity-control">
+            <button class="quantity-btn" onclick="changeQuantity(${item.id}, -1)">-</button>
+            <span>${item.quantity}</span>
+            <button class="quantity-btn" onclick="changeQuantity(${item.id}, 1)">+</button>
+          </div>
+          <p>$${(item.price * item.quantity).toFixed(2)}</p>
+        `;
+        
+        cartItemsEl.appendChild(cartItemEl);
+      });
+      
+      updateCartTotals();
+    }
+    
+    // Change item quantity
+    function changeQuantity(itemId, change) {
+      const cartItem = cart.find(item => item.id === itemId);
+      const menuItem = menuItems.find(item => item.id === itemId);
+      
+      if (change > 0 && cartItem.quantity >= menuItem.stock) {
+        alert('Sorry, we don\'t have enough stock!');
+        return;
+      }
+      
+      cartItem.quantity += change;
+      
+      if (cartItem.quantity <= 0) {
+        cart = cart.filter(item => item.id !== itemId);
+      }
+      
+      displayCartItems();
+      updateCartCount();
+    }
+    
+    // Update cart totals
+    function updateCartTotals() {
+      const subtotal = cart.reduce((total, item) => total + (item.price * item.quantity), 0);
+      const taxRate = 0.0825; // 8.25% tax
+      const tax = subtotal * taxRate;
+      const total = subtotal + tax;
+      
+      document.getElementById('subtotal').textContent = `$${subtotal.toFixed(2)}`;
+      document.getElementById('tax').textContent = `$${tax.toFixed(2)}`;
+      document.getElementById('total').textContent = `$${total.toFixed(2)}`;
+    }
+    
+    // Open cart modal
+    function openCartModal() {
+      document.getElementById('cartModal').style.display = 'block';
+      displayCartItems();
+    }
+    
+    // Close cart modal
+    function closeCartModal() {
+      document.getElementById('cartModal').style.display = 'none';
+    }
+    
+    // Process checkout
+    function checkout() {
+      if (cart.length === 0) {
+        alert('Your cart is empty!');
+        return;
+      }
+      
+      // Calculate longest prep time
+      const maxPrepTime = Math.max(...cart.map(item => item.prepTime));
+      
+      // Calculate pickup time (current time + prep time)
+      const now = new Date();
+      const pickupTime = new Date(now.getTime() + (maxPrepTime * 60000));
+      
+      // Format pickup time
+      const timeOptions = { hour: 'numeric', minute: 'numeric', hour12: true };
+      const formattedPickupTime = pickupTime.toLoc
